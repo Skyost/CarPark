@@ -35,14 +35,16 @@ class _CountdownPageState extends FullScreenSelfUpdatingMapWidgetState<Countdown
             color: Colors.blue,
           ),
           locationUpdateCallback: (controller, position) {
-            try {
-              controller?.fitBounds(
-                LatLngBounds(_model.carPosition, position),
-                options: FitBoundsOptions(
-                  padding: EdgeInsets.all(40),
-                ),
-              );
-            } catch (_) {}
+            if(!controller.ready) {
+              return;
+            }
+
+            controller.fitBounds(
+              LatLngBounds(_model.carPosition, position),
+              options: FitBoundsOptions(
+                padding: EdgeInsets.all(40),
+              ),
+            );
           },
           additionalMarkers: [
             Marker(

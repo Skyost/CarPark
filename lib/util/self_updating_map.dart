@@ -203,10 +203,8 @@ class _SelfUpdatingMapState extends State<SelfUpdatingMap> {
 
   /// Triggered when the position is updated.
   void _onPositionUpdate(LatLng position) {
-    if (widget.followCurrentPosition) {
-      try {
-        _controller?.move(position, 18);
-      } catch (ignored) {}
+    if (widget.followCurrentPosition && _controller.ready) {
+        _controller.move(position, 18);
     }
     widget.locationUpdateCallback(_controller, position);
 
