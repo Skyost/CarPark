@@ -71,7 +71,7 @@ class _SelfUpdatingMapState extends State<SelfUpdatingMap> {
   void initState() {
     super.initState();
 
-    LocationPermissions().checkPermissionStatus().then((status) {
+    LocationPermissions().requestPermissions().then((status) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         if(status == PermissionStatus.granted) {
           _registerStream();
