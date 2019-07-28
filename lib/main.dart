@@ -6,6 +6,7 @@ import 'package:car_park/app/model.dart';
 import 'package:car_park/util/localization/localization_delegate.dart';
 import 'package:car_park/util/noglow_behavior.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'app/style.dart';
@@ -75,13 +76,16 @@ class CarParkApp extends StatelessWidget {
       );
 
   /// Returns the default app scaffold.
-  Widget _withScaffold(Widget page) => Scaffold(
-        appBar: PreferredSize(
-          child: Container(
-            color: Colors.blue,
+  Widget _withScaffold(Widget page) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
+    return Scaffold(
+          appBar: PreferredSize(
+            child: Container(
+              color: Colors.blue,
+            ),
+            preferredSize: Size(0, 0),
           ),
-          preferredSize: Size(0, 0),
-        ),
-        body: page,
-      );
+          body: page,
+        );
+  }
 }
