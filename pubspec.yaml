@@ -1,6 +1,6 @@
 name: car_park
 description: A simple and lightweight parking tracker.
-version: 0.1.1+2
+version: 0.1.2+3
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
