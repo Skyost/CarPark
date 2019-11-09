@@ -109,7 +109,7 @@ class _CountdownPageState extends FullScreenSelfUpdatingMapWidgetState<Countdown
             Text(
               DateFormat('HH:mm').format(widget._model.start),
             ),
-            _CountdownWidget(widget._model.start.add(widget._model.duration)),
+            _CountdownWidget(HourMinute.fromDuration(widget._model.duration), widget._model.start.add(widget._model.duration)),
             Text(
               DateFormat('HH:mm').format(widget._model.start.add(widget._model.duration)),
             ),
@@ -144,11 +144,14 @@ class _CountdownPageState extends FullScreenSelfUpdatingMapWidgetState<Countdown
 
 /// The countdown widget.
 class _CountdownWidget extends StatefulWidget {
+  /// The park duration.
+  final HourMinute _duration;
+
   /// End date of the countdown.
   final DateTime _end;
 
   /// Creates a new countdown widget instance.
-  _CountdownWidget(this._end);
+  _CountdownWidget(this._duration, this._end);
 
   @override
   State<StatefulWidget> createState() => _CountdownWidgetState();
@@ -170,7 +173,7 @@ class _CountdownWidgetState extends State<_CountdownWidget> with WidgetsBindingO
     super.initState();
 
     _initCountDown();
-    _halfTime = _countdown.halfTime;
+    _halfTime = widget._duration.halfTime;
     _scheduleCountdownIteration();
 
     WidgetsBinding.instance.addObserver(this);
@@ -241,15 +244,16 @@ class _CountdownWidgetState extends State<_CountdownWidget> with WidgetsBindingO
       return Colors.red[800];
     }
 
-    if (_isAfterHalfTime) {
+    if (_countdown.isSmaller(_halfTime)) {
       return Colors.orange;
+    }
+
+    if(_countdown.isBigger(widget._duration)) {
+      return Colors.blue;
     }
 
     return Colors.green;
   }
-
-  /// Returns whether the current countdown is after half-time.
-  bool get _isAfterHalfTime => _halfTime.hour * 3600 + _halfTime.minute * 60 + _halfTime.second > _countdown.hour * 3600 + _countdown.minute * 60 + _countdown.second;
 
   /// Initializes the countdown.
   void _initCountDown() {

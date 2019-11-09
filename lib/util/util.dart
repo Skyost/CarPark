@@ -33,6 +33,37 @@ class Util {
   }
 }
 
+/// Hash utilities from quiver.
+class Hash {
+
+  /// Generates a hash code for two objects.
+  static int hash2(a, b) => _finish(_combine(_combine(0, a.hashCode), b.hashCode));
+
+  /// Generates a hash code for three objects.
+  static int hash3(a, b, c) => _finish(
+      _combine(_combine(_combine(0, a.hashCode), b.hashCode), c.hashCode));
+
+  /// Generates a hash code for four objects.
+  static int hash4(a, b, c, d) => _finish(_combine(
+      _combine(_combine(_combine(0, a.hashCode), b.hashCode), c.hashCode),
+      d.hashCode));
+
+  /// Combine a hash with its value.
+  static int _combine(int hash, int value) {
+    hash = 0x1fffffff & (hash + value);
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  /// Finish the process.
+  static int _finish(int hash) {
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+
+}
+
 /// Represents an instant in time with an hour and a minute.
 class HourMinute {
   /// The hour.
@@ -50,7 +81,7 @@ class HourMinute {
         minute = duration.inMinutes.remainder(60);
 
   /// Divides every duration by two.
-  HourMinuteSecond get halfTime => HourMinuteSecond(hour, minute, 30).halfTime;
+  HourMinuteSecond get halfTime => HourMinuteSecond(hour, minute).halfTime;
 
   /// Converts this hour minute to a duration.
   Duration get toDuration => Duration(
@@ -61,8 +92,29 @@ class HourMinute {
   /// Returns whether hour is 0 and minute is 0.
   bool get isZero => hour == 0 && minute == 0;
 
+  /// Returns this object's value in seconds.
+  int get toSeconds => hour * 3600 + minute * 60;
+
+  /// Returns whether we're bigger than specified target.
+  bool isBigger(HourMinute target) => toSeconds > target.toSeconds;
+
+  /// Returns whether we're smaller than specified target.
+  bool isSmaller(HourMinute target) => toSeconds < target.toSeconds;
+
   @override
   String toString() => Util.addZeroIfNeeded(hour) + ':' + Util.addZeroIfNeeded(minute);
+
+  @override
+  bool operator ==(other) {
+    if(!(other is HourMinute)) {
+      return false;
+    }
+
+    return toSeconds == other.toSeconds;
+  }
+
+  @override
+  int get hashCode => Hash.hash2(hour, minute);
 }
 
 /// Represents an instant in time with an hour, a minute and a second.
@@ -113,5 +165,11 @@ class HourMinuteSecond extends HourMinute {
   bool get isZero => super.isZero && second == 0;
 
   @override
+  int get toSeconds => super.toSeconds + second;
+
+  @override
   String toString() => Util.addZeroIfNeeded(hour) + ':' + Util.addZeroIfNeeded(minute) + ':' + Util.addZeroIfNeeded(second);
+
+  @override
+  int get hashCode => Hash.hash3(hour, minute, second);
 }

@@ -73,10 +73,13 @@ class _SelfUpdatingMapState extends State<SelfUpdatingMap> {
 
     LocationPermissions().requestPermissions().then((status) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if(status == PermissionStatus.granted) {
+        if (status == PermissionStatus.granted) {
           _registerStream();
         }
-        setState(() => _permissionStatus = status);
+
+        if (mounted) {
+          setState(() => _permissionStatus = status);
+        }
       });
     });
   }
@@ -204,11 +207,11 @@ class _SelfUpdatingMapState extends State<SelfUpdatingMap> {
   /// Triggered when the position is updated.
   void _onPositionUpdate(LatLng position) {
     if (widget.followCurrentPosition && _controller.ready) {
-        _controller.move(position, 18);
+      _controller.move(position, 18);
     }
     widget.locationUpdateCallback(_controller, position);
 
-    if(!mounted) {
+    if (!mounted) {
       return;
     }
 

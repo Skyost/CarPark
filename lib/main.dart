@@ -69,23 +69,22 @@ class CarParkApp extends StatelessWidget {
           '/end': (context) => _withScaffold(EndPage()),
         },
         builder: (context, child) => ScrollConfiguration(
-              behavior: NoGlowBehavior(),
-              child: child,
-            ),
-        debugShowCheckedModeBanner: false,
+          behavior: NoGlowBehavior(),
+          child: child,
+        ),
       );
 
   /// Returns the default app scaffold.
   Widget _withScaffold(Widget page) {
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     return Scaffold(
-          appBar: PreferredSize(
-            child: Container(
-              color: Colors.blue,
-            ),
-            preferredSize: Size(0, 0),
-          ),
-          body: page,
-        );
+      appBar: PreferredSize(
+        child: Container(
+          color: Colors.blue,
+        ),
+        preferredSize: Size(0, 0),
+      ),
+      body: page,
+    );
   }
 }

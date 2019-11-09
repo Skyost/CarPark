@@ -1,6 +1,6 @@
 name: car_park
 description: A simple and lightweight parking tracker.
-version: 0.1.2+3
+version: 0.1.3+4
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -10,14 +10,14 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  flutter_map: ^0.7.0
-  flutter_svg: ^0.13.1
+  flutter_map: ^0.7.3
+  flutter_svg: ^0.14.4
   flutter_duration_picker: ^1.0.4
-  flutter_local_notifications: ^0.8.0
-  auto_size_text: ^2.0.2
-  localstorage: ^2.0.0
-  url_launcher: ^5.1.0
-  geolocator: ^5.1.1
+  flutter_local_notifications: ^0.8.4
+  auto_size_text: ^2.1.0
+  localstorage: ^3.0.0
+  url_launcher: ^5.2.5
+  geolocator: ^5.1.5
 
 flutter:
   uses-material-design: true

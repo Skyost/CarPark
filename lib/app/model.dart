@@ -79,16 +79,15 @@ class CarParkModel {
 
   /// Schedules the half-time notification.
   void _scheduleHalfTimeNotification(BuildContext context) {
-    DateTime now = DateTime.now();
     DateTime end = start.add(duration);
-    HourMinuteSecond halftime = HourMinute.fromDuration(end.difference(now)).halfTime;
+    HourMinuteSecond halftime = HourMinute.fromDuration(end.difference(start)).halfTime;
 
     IOSNotificationDetails iOSPlatformChannelSpecifics = IOSNotificationDetails();
     _flutterLocalNotificationsPlugin.schedule(
       _MANUAL_NOTIFICATION_1,
       AppLocalization.of(context).get('model.notification.halfTime.title'),
       _formatNotificationMessage(AppLocalization.of(context).get('model.notification.halfTime.message'), halftime),
-      now.add(halftime.toDuration),
+      DateTime.now().add(start.difference(DateTime.now())).add(halftime.toDuration),
       NotificationDetails(_carParkManual, iOSPlatformChannelSpecifics),
     );
   }
